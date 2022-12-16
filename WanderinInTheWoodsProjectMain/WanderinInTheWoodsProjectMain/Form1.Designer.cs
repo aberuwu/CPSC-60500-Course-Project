@@ -51,6 +51,9 @@
             this.lblShortestRun = new System.Windows.Forms.Label();
             this.lblAvgRun = new System.Windows.Forms.Label();
             this.gbxSimParams = new System.Windows.Forms.GroupBox();
+            this.numCustomSeed = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblCustomPathSeed = new System.Windows.Forms.Label();
             this.lblCharacterSpeedValue = new System.Windows.Forms.Label();
             this.lblHeightValue = new System.Windows.Forms.Label();
             this.lblWidthValue = new System.Windows.Forms.Label();
@@ -70,8 +73,6 @@
             this.lblAvgRunOut = new System.Windows.Forms.Label();
             this.btnReset = new System.Windows.Forms.Button();
             this.confetiImage = new System.Windows.Forms.PictureBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.simulationManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblHint = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.character1)).BeginInit();
             this.gameGrid.SuspendLayout();
@@ -81,11 +82,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.forestBackground)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckCharacterNumb)).BeginInit();
             this.gbxSimParams.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCustomSeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckCharacterSpeed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckGridHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckGridWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.confetiImage)).BeginInit();
-            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // character1
@@ -116,7 +117,7 @@
             this.gameGrid.Controls.Add(this.character2);
             this.gameGrid.Controls.Add(this.character1);
             this.gameGrid.Controls.Add(this.forestBackground);
-            this.gameGrid.Location = new System.Drawing.Point(46, 290);
+            this.gameGrid.Location = new System.Drawing.Point(46, 370);
             this.gameGrid.Name = "gameGrid";
             this.gameGrid.Size = new System.Drawing.Size(663, 501);
             this.gameGrid.TabIndex = 1;
@@ -185,7 +186,7 @@
             this.lblFound.AutoSize = true;
             this.lblFound.Font = new System.Drawing.Font("Tempus Sans ITC", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFound.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblFound.Location = new System.Drawing.Point(192, 260);
+            this.lblFound.Location = new System.Drawing.Point(325, 336);
             this.lblFound.Name = "lblFound";
             this.lblFound.Size = new System.Drawing.Size(364, 31);
             this.lblFound.TabIndex = 2;
@@ -194,7 +195,7 @@
             // 
             // btnSimStart
             // 
-            this.btnSimStart.Location = new System.Drawing.Point(86, 222);
+            this.btnSimStart.Location = new System.Drawing.Point(81, 313);
             this.btnSimStart.Name = "btnSimStart";
             this.btnSimStart.Size = new System.Drawing.Size(106, 35);
             this.btnSimStart.TabIndex = 3;
@@ -205,15 +206,15 @@
             // ddlGameMode
             // 
             this.ddlGameMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ddlGameMode.Font = new System.Drawing.Font("Tempus Sans ITC", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ddlGameMode.Font = new System.Drawing.Font("Tempus Sans ITC", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ddlGameMode.FormattingEnabled = true;
             this.ddlGameMode.Items.AddRange(new object[] {
             "K-2 (Simple)",
             "3-5 (Intermediate)",
             "6-8 (Advanced)"});
-            this.ddlGameMode.Location = new System.Drawing.Point(193, 40);
+            this.ddlGameMode.Location = new System.Drawing.Point(174, 40);
             this.ddlGameMode.Name = "ddlGameMode";
-            this.ddlGameMode.Size = new System.Drawing.Size(180, 32);
+            this.ddlGameMode.Size = new System.Drawing.Size(180, 28);
             this.ddlGameMode.TabIndex = 4;
             this.ddlGameMode.SelectedIndexChanged += new System.EventHandler(this.ddlGameMode_SelectedIndexChanged);
             // 
@@ -222,20 +223,20 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tempus Sans ITC", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(12, 45);
+            this.label1.Location = new System.Drawing.Point(29, 44);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(175, 24);
+            this.label1.Size = new System.Drawing.Size(117, 24);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Select Game Mode";
+            this.label1.Text = "Game Mode";
             // 
             // tckCharacterNumb
             // 
             this.tckCharacterNumb.LargeChange = 1;
-            this.tckCharacterNumb.Location = new System.Drawing.Point(140, 22);
+            this.tckCharacterNumb.Location = new System.Drawing.Point(140, 28);
             this.tckCharacterNumb.Maximum = 4;
             this.tckCharacterNumb.Minimum = 2;
             this.tckCharacterNumb.Name = "tckCharacterNumb";
-            this.tckCharacterNumb.Size = new System.Drawing.Size(104, 45);
+            this.tckCharacterNumb.Size = new System.Drawing.Size(141, 45);
             this.tckCharacterNumb.TabIndex = 6;
             this.tckCharacterNumb.Value = 2;
             this.tckCharacterNumb.Scroll += new System.EventHandler(this.tckCharacterNumb_Scroll);
@@ -245,7 +246,7 @@
             this.lblCharacterNumb.AutoSize = true;
             this.lblCharacterNumb.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacterNumb.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacterNumb.Location = new System.Drawing.Point(6, 28);
+            this.lblCharacterNumb.Location = new System.Drawing.Point(6, 34);
             this.lblCharacterNumb.Name = "lblCharacterNumb";
             this.lblCharacterNumb.Size = new System.Drawing.Size(125, 19);
             this.lblCharacterNumb.TabIndex = 7;
@@ -256,7 +257,7 @@
             this.lblCharacter1Steps.AutoSize = true;
             this.lblCharacter1Steps.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter1Steps.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter1Steps.Location = new System.Drawing.Point(9, 86);
+            this.lblCharacter1Steps.Location = new System.Drawing.Point(91, 94);
             this.lblCharacter1Steps.Name = "lblCharacter1Steps";
             this.lblCharacter1Steps.Size = new System.Drawing.Size(135, 19);
             this.lblCharacter1Steps.TabIndex = 8;
@@ -267,7 +268,7 @@
             this.lblCharacter2Steps.AutoSize = true;
             this.lblCharacter2Steps.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter2Steps.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter2Steps.Location = new System.Drawing.Point(9, 116);
+            this.lblCharacter2Steps.Location = new System.Drawing.Point(91, 124);
             this.lblCharacter2Steps.Name = "lblCharacter2Steps";
             this.lblCharacter2Steps.Size = new System.Drawing.Size(137, 19);
             this.lblCharacter2Steps.TabIndex = 9;
@@ -278,7 +279,7 @@
             this.lblCharacter3Steps.AutoSize = true;
             this.lblCharacter3Steps.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter3Steps.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter3Steps.Location = new System.Drawing.Point(9, 146);
+            this.lblCharacter3Steps.Location = new System.Drawing.Point(91, 154);
             this.lblCharacter3Steps.Name = "lblCharacter3Steps";
             this.lblCharacter3Steps.Size = new System.Drawing.Size(136, 19);
             this.lblCharacter3Steps.TabIndex = 10;
@@ -290,7 +291,7 @@
             this.lblCharacter4Steps.AutoSize = true;
             this.lblCharacter4Steps.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter4Steps.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter4Steps.Location = new System.Drawing.Point(9, 175);
+            this.lblCharacter4Steps.Location = new System.Drawing.Point(91, 181);
             this.lblCharacter4Steps.Name = "lblCharacter4Steps";
             this.lblCharacter4Steps.Size = new System.Drawing.Size(138, 19);
             this.lblCharacter4Steps.TabIndex = 11;
@@ -302,36 +303,42 @@
             this.lblLongestRun.AutoSize = true;
             this.lblLongestRun.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLongestRun.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblLongestRun.Location = new System.Drawing.Point(205, 86);
+            this.lblLongestRun.Location = new System.Drawing.Point(91, 209);
             this.lblLongestRun.Name = "lblLongestRun";
             this.lblLongestRun.Size = new System.Drawing.Size(105, 19);
             this.lblLongestRun.TabIndex = 12;
             this.lblLongestRun.Text = "Longest Run:";
+            this.lblLongestRun.Visible = false;
             // 
             // lblShortestRun
             // 
             this.lblShortestRun.AutoSize = true;
             this.lblShortestRun.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblShortestRun.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblShortestRun.Location = new System.Drawing.Point(205, 116);
+            this.lblShortestRun.Location = new System.Drawing.Point(91, 239);
             this.lblShortestRun.Name = "lblShortestRun";
             this.lblShortestRun.Size = new System.Drawing.Size(106, 19);
             this.lblShortestRun.TabIndex = 13;
             this.lblShortestRun.Text = "Shortest Run:";
+            this.lblShortestRun.Visible = false;
             // 
             // lblAvgRun
             // 
             this.lblAvgRun.AutoSize = true;
             this.lblAvgRun.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAvgRun.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblAvgRun.Location = new System.Drawing.Point(205, 146);
+            this.lblAvgRun.Location = new System.Drawing.Point(91, 269);
             this.lblAvgRun.Name = "lblAvgRun";
             this.lblAvgRun.Size = new System.Drawing.Size(107, 19);
             this.lblAvgRun.TabIndex = 14;
             this.lblAvgRun.Text = "Average Run:";
+            this.lblAvgRun.Visible = false;
             // 
             // gbxSimParams
             // 
+            this.gbxSimParams.Controls.Add(this.numCustomSeed);
+            this.gbxSimParams.Controls.Add(this.label2);
+            this.gbxSimParams.Controls.Add(this.lblCustomPathSeed);
             this.gbxSimParams.Controls.Add(this.lblCharacterSpeedValue);
             this.gbxSimParams.Controls.Add(this.lblHeightValue);
             this.gbxSimParams.Controls.Add(this.lblWidthValue);
@@ -348,28 +355,62 @@
             this.gbxSimParams.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.gbxSimParams.Location = new System.Drawing.Point(385, 40);
             this.gbxSimParams.Name = "gbxSimParams";
-            this.gbxSimParams.Size = new System.Drawing.Size(324, 186);
+            this.gbxSimParams.Size = new System.Drawing.Size(324, 293);
             this.gbxSimParams.TabIndex = 15;
             this.gbxSimParams.TabStop = false;
             this.gbxSimParams.Text = "Simulation Parameters";
+            // 
+            // numCustomSeed
+            // 
+            this.numCustomSeed.Location = new System.Drawing.Point(11, 196);
+            this.numCustomSeed.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numCustomSeed.Name = "numCustomSeed";
+            this.numCustomSeed.Size = new System.Drawing.Size(120, 22);
+            this.numCustomSeed.TabIndex = 28;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Tempus Sans ITC", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label2.Location = new System.Drawing.Point(8, 224);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(254, 34);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Hint: set integer value to be used to generate \r\ncustom path seed";
+            // 
+            // lblCustomPathSeed
+            // 
+            this.lblCustomPathSeed.AutoSize = true;
+            this.lblCustomPathSeed.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCustomPathSeed.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblCustomPathSeed.Location = new System.Drawing.Point(7, 169);
+            this.lblCustomPathSeed.Name = "lblCustomPathSeed";
+            this.lblCustomPathSeed.Size = new System.Drawing.Size(235, 19);
+            this.lblCustomPathSeed.TabIndex = 18;
+            this.lblCustomPathSeed.Text = "Custom Path Seed Randomizer:";
             // 
             // lblCharacterSpeedValue
             // 
             this.lblCharacterSpeedValue.AutoSize = true;
             this.lblCharacterSpeedValue.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacterSpeedValue.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacterSpeedValue.Location = new System.Drawing.Point(248, 135);
+            this.lblCharacterSpeedValue.Location = new System.Drawing.Point(287, 132);
             this.lblCharacterSpeedValue.Name = "lblCharacterSpeedValue";
-            this.lblCharacterSpeedValue.Size = new System.Drawing.Size(16, 19);
+            this.lblCharacterSpeedValue.Size = new System.Drawing.Size(18, 19);
             this.lblCharacterSpeedValue.TabIndex = 17;
-            this.lblCharacterSpeedValue.Text = "1";
+            this.lblCharacterSpeedValue.Text = "2";
             // 
             // lblHeightValue
             // 
             this.lblHeightValue.AutoSize = true;
             this.lblHeightValue.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHeightValue.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblHeightValue.Location = new System.Drawing.Point(248, 95);
+            this.lblHeightValue.Location = new System.Drawing.Point(288, 95);
             this.lblHeightValue.Name = "lblHeightValue";
             this.lblHeightValue.Size = new System.Drawing.Size(17, 19);
             this.lblHeightValue.TabIndex = 16;
@@ -380,7 +421,7 @@
             this.lblWidthValue.AutoSize = true;
             this.lblWidthValue.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblWidthValue.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblWidthValue.Location = new System.Drawing.Point(248, 61);
+            this.lblWidthValue.Location = new System.Drawing.Point(288, 61);
             this.lblWidthValue.Name = "lblWidthValue";
             this.lblWidthValue.Size = new System.Drawing.Size(17, 19);
             this.lblWidthValue.TabIndex = 15;
@@ -391,7 +432,7 @@
             this.lbllCurrentCharacterValue.AutoSize = true;
             this.lbllCurrentCharacterValue.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbllCurrentCharacterValue.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbllCurrentCharacterValue.Location = new System.Drawing.Point(248, 22);
+            this.lbllCurrentCharacterValue.Location = new System.Drawing.Point(287, 28);
             this.lbllCurrentCharacterValue.Name = "lbllCurrentCharacterValue";
             this.lbllCurrentCharacterValue.Size = new System.Drawing.Size(18, 19);
             this.lbllCurrentCharacterValue.TabIndex = 14;
@@ -399,13 +440,13 @@
             // 
             // tckCharacterSpeed
             // 
-            this.tckCharacterSpeed.Location = new System.Drawing.Point(141, 135);
+            this.tckCharacterSpeed.Location = new System.Drawing.Point(141, 132);
             this.tckCharacterSpeed.Maximum = 3;
             this.tckCharacterSpeed.Minimum = 1;
             this.tckCharacterSpeed.Name = "tckCharacterSpeed";
-            this.tckCharacterSpeed.Size = new System.Drawing.Size(104, 45);
+            this.tckCharacterSpeed.Size = new System.Drawing.Size(140, 45);
             this.tckCharacterSpeed.TabIndex = 12;
-            this.tckCharacterSpeed.Value = 1;
+            this.tckCharacterSpeed.Value = 2;
             this.tckCharacterSpeed.Scroll += new System.EventHandler(this.tckCharacterSpeed_Scroll);
             // 
             // lblCharacterSpeed
@@ -413,7 +454,7 @@
             this.lblCharacterSpeed.AutoSize = true;
             this.lblCharacterSpeed.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacterSpeed.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacterSpeed.Location = new System.Drawing.Point(7, 141);
+            this.lblCharacterSpeed.Location = new System.Drawing.Point(7, 132);
             this.lblCharacterSpeed.Name = "lblCharacterSpeed";
             this.lblCharacterSpeed.Size = new System.Drawing.Size(128, 19);
             this.lblCharacterSpeed.TabIndex = 13;
@@ -425,7 +466,7 @@
             this.tckGridHeight.Maximum = 3;
             this.tckGridHeight.Minimum = 1;
             this.tckGridHeight.Name = "tckGridHeight";
-            this.tckGridHeight.Size = new System.Drawing.Size(104, 45);
+            this.tckGridHeight.Size = new System.Drawing.Size(141, 45);
             this.tckGridHeight.TabIndex = 10;
             this.tckGridHeight.Value = 3;
             this.tckGridHeight.Scroll += new System.EventHandler(this.tckGridHeight_Scroll);
@@ -447,7 +488,7 @@
             this.tckGridWidth.Maximum = 3;
             this.tckGridWidth.Minimum = 1;
             this.tckGridWidth.Name = "tckGridWidth";
-            this.tckGridWidth.Size = new System.Drawing.Size(104, 45);
+            this.tckGridWidth.Size = new System.Drawing.Size(140, 45);
             this.tckGridWidth.TabIndex = 8;
             this.tckGridWidth.Value = 3;
             this.tckGridWidth.Scroll += new System.EventHandler(this.tckGridWidth_Scroll);
@@ -468,7 +509,7 @@
             this.lblCharacter1StepsOut.AutoSize = true;
             this.lblCharacter1StepsOut.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter1StepsOut.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter1StepsOut.Location = new System.Drawing.Point(148, 86);
+            this.lblCharacter1StepsOut.Location = new System.Drawing.Point(234, 94);
             this.lblCharacter1StepsOut.Name = "lblCharacter1StepsOut";
             this.lblCharacter1StepsOut.Size = new System.Drawing.Size(42, 19);
             this.lblCharacter1StepsOut.TabIndex = 16;
@@ -479,7 +520,7 @@
             this.lblCharacter2StepsOut.AutoSize = true;
             this.lblCharacter2StepsOut.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter2StepsOut.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter2StepsOut.Location = new System.Drawing.Point(148, 116);
+            this.lblCharacter2StepsOut.Location = new System.Drawing.Point(234, 127);
             this.lblCharacter2StepsOut.Name = "lblCharacter2StepsOut";
             this.lblCharacter2StepsOut.Size = new System.Drawing.Size(42, 19);
             this.lblCharacter2StepsOut.TabIndex = 17;
@@ -490,7 +531,7 @@
             this.lblCharacter3StepsOut.AutoSize = true;
             this.lblCharacter3StepsOut.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter3StepsOut.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter3StepsOut.Location = new System.Drawing.Point(148, 146);
+            this.lblCharacter3StepsOut.Location = new System.Drawing.Point(233, 154);
             this.lblCharacter3StepsOut.Name = "lblCharacter3StepsOut";
             this.lblCharacter3StepsOut.Size = new System.Drawing.Size(42, 19);
             this.lblCharacter3StepsOut.TabIndex = 18;
@@ -502,7 +543,7 @@
             this.lblCharacter4StepsOut.AutoSize = true;
             this.lblCharacter4StepsOut.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCharacter4StepsOut.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblCharacter4StepsOut.Location = new System.Drawing.Point(148, 175);
+            this.lblCharacter4StepsOut.Location = new System.Drawing.Point(233, 181);
             this.lblCharacter4StepsOut.Name = "lblCharacter4StepsOut";
             this.lblCharacter4StepsOut.Size = new System.Drawing.Size(42, 19);
             this.lblCharacter4StepsOut.TabIndex = 19;
@@ -514,37 +555,40 @@
             this.lblLongestRunOut.AutoSize = true;
             this.lblLongestRunOut.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLongestRunOut.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblLongestRunOut.Location = new System.Drawing.Point(316, 86);
+            this.lblLongestRunOut.Location = new System.Drawing.Point(233, 209);
             this.lblLongestRunOut.Name = "lblLongestRunOut";
             this.lblLongestRunOut.Size = new System.Drawing.Size(42, 19);
             this.lblLongestRunOut.TabIndex = 20;
             this.lblLongestRunOut.Text = "###";
+            this.lblLongestRunOut.Visible = false;
             // 
             // lblShortestRunOut
             // 
             this.lblShortestRunOut.AutoSize = true;
             this.lblShortestRunOut.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblShortestRunOut.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblShortestRunOut.Location = new System.Drawing.Point(317, 116);
+            this.lblShortestRunOut.Location = new System.Drawing.Point(234, 239);
             this.lblShortestRunOut.Name = "lblShortestRunOut";
             this.lblShortestRunOut.Size = new System.Drawing.Size(42, 19);
             this.lblShortestRunOut.TabIndex = 21;
             this.lblShortestRunOut.Text = "###";
+            this.lblShortestRunOut.Visible = false;
             // 
             // lblAvgRunOut
             // 
             this.lblAvgRunOut.AutoSize = true;
             this.lblAvgRunOut.Font = new System.Drawing.Font("Tempus Sans ITC", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAvgRunOut.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblAvgRunOut.Location = new System.Drawing.Point(316, 146);
+            this.lblAvgRunOut.Location = new System.Drawing.Point(233, 269);
             this.lblAvgRunOut.Name = "lblAvgRunOut";
             this.lblAvgRunOut.Size = new System.Drawing.Size(42, 19);
             this.lblAvgRunOut.TabIndex = 22;
             this.lblAvgRunOut.Text = "###";
+            this.lblAvgRunOut.Visible = false;
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(198, 222);
+            this.btnReset.Location = new System.Drawing.Point(193, 313);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(106, 35);
             this.btnReset.TabIndex = 23;
@@ -555,36 +599,20 @@
             // confetiImage
             // 
             this.confetiImage.Image = ((System.Drawing.Image)(resources.GetObject("confetiImage.Image")));
-            this.confetiImage.Location = new System.Drawing.Point(-8, 24);
+            this.confetiImage.Location = new System.Drawing.Point(-14, -4);
             this.confetiImage.Name = "confetiImage";
-            this.confetiImage.Size = new System.Drawing.Size(768, 803);
+            this.confetiImage.Size = new System.Drawing.Size(768, 915);
             this.confetiImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.confetiImage.TabIndex = 24;
             this.confetiImage.TabStop = false;
             this.confetiImage.Visible = false;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.simulationManualToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(754, 24);
-            this.menuStrip1.TabIndex = 25;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // simulationManualToolStripMenuItem
-            // 
-            this.simulationManualToolStripMenuItem.Name = "simulationManualToolStripMenuItem";
-            this.simulationManualToolStripMenuItem.Size = new System.Drawing.Size(119, 20);
-            this.simulationManualToolStripMenuItem.Text = "Simulation Manual";
             // 
             // lblHint
             // 
             this.lblHint.AutoSize = true;
             this.lblHint.Font = new System.Drawing.Font("Tempus Sans ITC", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHint.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblHint.Location = new System.Drawing.Point(46, 794);
+            this.lblHint.Location = new System.Drawing.Point(43, 875);
             this.lblHint.Name = "lblHint";
             this.lblHint.Size = new System.Drawing.Size(327, 17);
             this.lblHint.TabIndex = 26;
@@ -595,7 +623,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkOliveGreen;
-            this.ClientSize = new System.Drawing.Size(754, 815);
+            this.ClientSize = new System.Drawing.Size(754, 901);
             this.Controls.Add(this.lblHint);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.lblAvgRunOut);
@@ -619,13 +647,10 @@
             this.Controls.Add(this.lblFound);
             this.Controls.Add(this.gameGrid);
             this.Controls.Add(this.confetiImage);
-            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "frmMain";
             this.Text = "Wandering In The Woods Simulation";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmMain_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.character1)).EndInit();
             this.gameGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.character3)).EndInit();
@@ -635,12 +660,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.tckCharacterNumb)).EndInit();
             this.gbxSimParams.ResumeLayout(false);
             this.gbxSimParams.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCustomSeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckCharacterSpeed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckGridHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckGridWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.confetiImage)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -682,8 +706,6 @@
         private System.Windows.Forms.Label lblAvgRunOut;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.PictureBox confetiImage;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem simulationManualToolStripMenuItem;
         private System.Windows.Forms.Label lblHint;
         private System.Windows.Forms.PictureBox character3;
         private System.Windows.Forms.PictureBox character4;
@@ -691,6 +713,9 @@
         private System.Windows.Forms.Label lblCharacterSpeedValue;
         private System.Windows.Forms.Label lblHeightValue;
         private System.Windows.Forms.Label lblWidthValue;
+        private System.Windows.Forms.Label lblCustomPathSeed;
+        private System.Windows.Forms.NumericUpDown numCustomSeed;
+        private System.Windows.Forms.Label label2;
     }
 }
 

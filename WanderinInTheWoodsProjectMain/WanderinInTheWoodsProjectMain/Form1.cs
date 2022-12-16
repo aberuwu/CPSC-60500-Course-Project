@@ -1,4 +1,19 @@
-﻿using System;
+﻿///<remarks>
+/// Contributers: 
+/// -Cesar I. Mendoza 
+/// -Vimochana Veronica Ruth Dubba
+/// -Johnny Rebollar
+/// -Surya Reddy Kalva
+/// -Pallavi Karengala
+/// 
+/// File: Form1.cs
+/// Purpose: Code implementation for the wandering in the woods simulation project
+///          
+/// 
+/// Course: CPSC 60500-005 - Software Engineering - FALL 2022
+/// </remarks>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,19 +29,22 @@ namespace WanderinInTheWoodsProjectMain
 {
     public partial class frmMain : Form
     {
-        //int speed = 8;
+        //Simulation stat defaults
         int movementPosition = 5;
         const int faces = 2;
         int character1Count = 0, character2Count = 0,
             character3Count = 0, character4Count = 0;
-        
         int shortestRun = 0;
         int longestRun = 0;
         int averageRunCount = 0;
 
+        //Simulation parameter defaults
         int gridHeight = 501;
         int gridWidth = 663;
+        int characterSpeedLeft = -5;
+        int characterSpeedRight = 5;
 
+        //Character default positions
         Point character1Location = Point.Empty;
         bool character1Moved = false;
         Point character2Location = Point.Empty;
@@ -36,7 +54,7 @@ namespace WanderinInTheWoodsProjectMain
         Point character4Location = Point.Empty;
         bool character4Moved = false;
 
-
+        //Character flags
         bool character1Found = false, character2Found = false, character3Found = false, character4Found = false;
         bool simulationStart = false;
         bool initialCountvalue = true;
@@ -50,6 +68,11 @@ namespace WanderinInTheWoodsProjectMain
         static string pathFoundBackground = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"AudioAssets\character-found-sound.wav");
         System.Media.SoundPlayer playerFoundBackground = new System.Media.SoundPlayer(pathFoundBackground);
 
+        /// <summary>
+        /// Initializes components and sets drop down default value
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         public frmMain()
         {
             InitializeComponent();
@@ -57,6 +80,11 @@ namespace WanderinInTheWoodsProjectMain
 
         }
 
+        /// <summary>
+        /// Handles the simulation start even click, checks if event started else stops simulation
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void btnSimStart_Click(object sender, EventArgs e)
         {
             if (!simulationStart)
@@ -108,28 +136,72 @@ namespace WanderinInTheWoodsProjectMain
 
         }
 
-
+        /// <summary>
+        /// Handles the simulation reset parameter click event, calls resetSimulation function
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void btnReset_Click(object sender, EventArgs e)
         {
             resetSimulation();
         }
 
+        /// <summary>
+        /// Handles ddlGameMode index changed event, sets visibility for controls based on 
+        /// selected drop down value
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void ddlGameMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlGameMode.SelectedIndex == 0)
             {
                 gbxSimParams.Enabled = false;
+                lblLongestRun.Visible = false;
+                lblLongestRunOut.Visible = false;
+                lblShortestRun.Visible = false;
+                lblShortestRunOut.Visible = false;
+                lblAvgRun.Visible = false;
+                lblAvgRunOut.Visible = false;
+
+
+                tckCharacterSpeed.Enabled = false;
+                numCustomSeed.Enabled = false;
+
             }
             if (ddlGameMode.SelectedIndex == 1)
             {
                 gbxSimParams.Enabled = true;
+                lblLongestRun.Visible = true;
+                lblLongestRunOut.Visible = true;
+                lblShortestRun.Visible = true;
+                lblShortestRunOut.Visible = true;
+                lblAvgRun.Visible = true;
+                lblAvgRunOut.Visible = true;
+
+                tckCharacterSpeed.Enabled = false;
+                numCustomSeed.Enabled = false;
             }
             if (ddlGameMode.SelectedIndex == 2)
             {
                 gbxSimParams.Enabled = true;
+                lblLongestRun.Visible = true;
+                lblLongestRunOut.Visible = true;
+                lblShortestRun.Visible = true;
+                lblShortestRunOut.Visible = true;
+                lblAvgRun.Visible = true;
+                lblAvgRunOut.Visible = true;
+
+                tckCharacterSpeed.Enabled = true;
+                numCustomSeed.Enabled = true;
             }
         }
 
+        /// <summary>
+        /// Resets simulation parameters to default values
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void resetSimulation()
         {
             character1Count = 0;
@@ -148,6 +220,10 @@ namespace WanderinInTheWoodsProjectMain
             initialCountvalue = true;
             lblShortestRunOut.Text = "###";
             lblLongestRunOut.Text = "###";
+            character1.BackColor = Color.DarkOliveGreen;
+            character2.BackColor = Color.DarkOliveGreen;
+            character3.BackColor = Color.DarkOliveGreen;
+            character4.BackColor = Color.DarkOliveGreen;
 
             //Character Positions
             if (character1Moved)
@@ -174,17 +250,29 @@ namespace WanderinInTheWoodsProjectMain
         }
 
 
+        /// <summary>
+        /// Handles tick event for game, handles in game pathing calculations and calculates
+        /// dynamic output for simulation statistics, handles character found events
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void gameTimerEvent(object sender, EventArgs e)
         {
             foreach(PictureBox character in characters)
             {
+                Random rnd;
 
-                Random rnd = new Random(Guid.NewGuid().GetHashCode());
-                //int randomHpts = rnd.Next(0, 5);
+                if(numCustomSeed.Enabled == true && numCustomSeed.Value != 0)
+                {
+                    int customSeed = (int)numCustomSeed.Value;
+                     rnd = new Random((Guid.NewGuid().GetHashCode()) * customSeed);
+                }
+                else
+                {
+                     rnd = new Random(Guid.NewGuid().GetHashCode());
+                }
 
-                //Random rnd = new Random();
-                movementPosition = rnd.Next(-5, 5);
-
+                movementPosition = rnd.Next(characterSpeedLeft, characterSpeedRight);
                 int updownodd = rnd.Next(faces);
 
                 if (updownodd == 1)
@@ -218,58 +306,54 @@ namespace WanderinInTheWoodsProjectMain
                     character.Left += movementPosition;
                 }
 
-
                 if (character.Name == "character1")
                 {
                     if (!character1Found)
                     {
-                        character1Count += Math.Abs(movementPosition);
                         averageRunCount += character1Count;
-                        lblCharacter1StepsOut.Text = character1Count.ToString();
                     }
+                    character1Count += Math.Abs(movementPosition);
+                    lblCharacter1StepsOut.Text = character1Count.ToString();
                 }
                 else if(character.Name == "character2")
                 {
                     if (!character2Found)
                     {
-                        character2Count += Math.Abs(movementPosition);
                         averageRunCount += character2Count;
-                        lblCharacter2StepsOut.Text = character2Count.ToString();
                     }
+                    character2Count += Math.Abs(movementPosition);
+                    lblCharacter2StepsOut.Text = character2Count.ToString();
                 }
                 else if (character.Name == "character3")
                 {
                     if (!character3Found)
                     {
-                        character3Count += Math.Abs(movementPosition);
                         averageRunCount += character3Count;
-                        lblCharacter3StepsOut.Text = character3Count.ToString();
                     }
+                    character3Count += Math.Abs(movementPosition);
+                    lblCharacter3StepsOut.Text = character3Count.ToString();
                 }
                 else if (character.Name == "character4")
                 {
                     if (!character4Found)
                     {
-                        character4Count += Math.Abs(movementPosition);
                         averageRunCount += character4Count;
-                        lblCharacter4StepsOut.Text = character4Count.ToString();
                     }
+                    character4Count += Math.Abs(movementPosition);
+                    lblCharacter4StepsOut.Text = character4Count.ToString();
                 }
 
                 averageRunCount = (character2Count + character1Count + character3Count + character4Count)/characters.Count();
                 lblAvgRunOut.Text = averageRunCount.ToString();
-
             }
 
       
             if(characters.Count == 2)
             {
-
                 if (characters[0].Bounds.IntersectsWith(characters[1].Bounds))
                 {
                     character1Found = true;
                     character2Found = true;
-
 
                     if (initialCountvalue)
                     {
@@ -277,13 +361,15 @@ namespace WanderinInTheWoodsProjectMain
                         longestRun = Math.Max(character1Count, character2Count);
                         lblShortestRunOut.Text = shortestRun.ToString();
                         lblLongestRunOut.Text = longestRun.ToString();
-                        
                         initialCountvalue = false;
                     }
-
+                   
                 }
                 if (character1Found && character2Found)
                 {
+                    //Set character color when found
+                    character1.BackColor = Color.Red;
+                    character2.BackColor = Color.Red;
                     confetiImage.Visible = true;
                     lblFound.Visible = true;
                     gameTimer.Enabled = false;
@@ -299,32 +385,23 @@ namespace WanderinInTheWoodsProjectMain
                     character1Found = true;
                     character2Found = true;
 
-                    if (initialCountvalue)
+                    if (shortestRun == 0)
                     {
-                        shortestRun = Math.Min(character1Count, character2Count);
-                        lblShortestRunOut.Text = shortestRun.ToString();
-                        initialCountvalue = false;
+                        shortestRun = character1Count;
                     }
-                    else
+                    if (character1Count < shortestRun)
                     {
-                        if(character1Count < shortestRun)
-                        {
-                            shortestRun = character1Count;
-                            lblShortestRunOut.Text = character1Count.ToString();
-                        }
-                        if(character2Count < shortestRun)
-                        {
-                            shortestRun = character2Count;
-                            lblShortestRunOut.Text = character2Count.ToString();
-                        }
+                        lblShortestRunOut.Text = character1Count.ToString();
+                    }
+                    if (character2Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character2Count.ToString();
                     }
 
-                    if (initialCountvalueLongest)
-                    {
-                        longestRun = Math.Max(character1Count, character2Count);
-                        lblLongestRunOut.Text = longestRun.ToString();
-                        initialCountvalueLongest = false;
-                    }
+                    //Set character color when found
+                    character1.BackColor = Color.Purple;
+                    character2.BackColor = Color.Purple;
+
                 }   
                 if (characters[1].Bounds.IntersectsWith(characters[2].Bounds))
                 {
@@ -332,25 +409,22 @@ namespace WanderinInTheWoodsProjectMain
                     character3Found = true;
 
 
-                    if (initialCountvalue)
+                    if (shortestRun == 0)
                     {
-                        shortestRun = Math.Min(character2Count, character3Count);
-                        lblShortestRunOut.Text = shortestRun.ToString();
-                        initialCountvalue = false;
+                        shortestRun = character1Count;
                     }
-                    else
+                    if (character2Count < shortestRun)
                     {
-                        if (character2Count < shortestRun)
-                        {
-                            shortestRun = character2Count;
-                            lblShortestRunOut.Text = character2Count.ToString();
-                        }
-                        if (character3Count < shortestRun)
-                        {
-                            shortestRun = character3Count;
-                            lblShortestRunOut.Text = character3Count.ToString();
-                        }
+                        lblShortestRunOut.Text = character2Count.ToString();
                     }
+                    if (character3Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character3Count.ToString();
+                    }
+
+                    //Set character color when found
+                    character2.BackColor = Color.Purple;
+                    character3.BackColor = Color.Purple;
 
                 }
                 if (characters[2].Bounds.IntersectsWith(characters[0].Bounds))
@@ -358,35 +432,43 @@ namespace WanderinInTheWoodsProjectMain
                     character3Found = true;
                     character1Found = true;
 
-                    if (initialCountvalue)
+                    if (shortestRun == 0)
                     {
-                        shortestRun = Math.Min(character3Count, character1Count);
-                        lblShortestRunOut.Text = shortestRun.ToString();
-                        initialCountvalue = false;
+                        shortestRun = character1Count;
                     }
-                    else
+                    if (character3Count < shortestRun)
                     {
-                        if (character3Count < shortestRun)
-                        {
-                            shortestRun = character3Count;
-                            lblShortestRunOut.Text = character3Count.ToString();
-                        }
-                        if (character1Count < shortestRun)
-                        {
-                            shortestRun = character1Count;
-                            lblShortestRunOut.Text = character1Count.ToString();
-                        }
+                        lblShortestRunOut.Text = character3Count.ToString();
                     }
+                    if (character1Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character1Count.ToString();
+                    }
+
+                    //Set character color when found
+                    character3.BackColor = Color.Purple;
+                    character1.BackColor = Color.Purple;
+
 
                 }
                 if (character1Found && character2Found && character3Found)
                 {
+                    //Set character color when found
+                    character1.BackColor = Color.Red;
+                    character2.BackColor = Color.Red;
+                    character3.BackColor = Color.Red;
+
                     confetiImage.Visible = true;
                     lblFound.Visible = true;
                     gameTimer.Enabled = false;
                     playerBackground.Stop();
                     playerFoundBackground.Play();
 
+
+                    int longestRunInitial = Math.Max(character1Count, character2Count);
+                    longestRun = Math.Max(character3Count, longestRunInitial);
+                    lblLongestRunOut.Text = longestRun.ToString();
+                    initialCountvalueLongest = false;
                 }
             }
             else if (characters.Count == 4)
@@ -397,71 +479,164 @@ namespace WanderinInTheWoodsProjectMain
                     character1Found = true;
                     character2Found = true;
 
-                    if (character1Count < character2Count)
+
+                    if(shortestRun == 0)
+                    {
+                        shortestRun = character1Count;
+                    }
+                    if(character1Count < shortestRun)
                     {
                         lblShortestRunOut.Text = character1Count.ToString();
                     }
-                    else
+                    if(character2Count < shortestRun)
                     {
                         lblShortestRunOut.Text = character2Count.ToString();
                     }
 
+                    //Set character color when found
+                    character1.BackColor = Color.Purple;
+                    character2.BackColor = Color.Purple;
                 }
                 if (characters[1].Bounds.IntersectsWith(characters[2].Bounds))
                 {
                     character2Found = true;
                     character3Found = true;
 
-                    if (character2Count < character3Count)
+                    if (shortestRun == 0)
                     {
-                        lblShortestRunOut.Text = character1Count.ToString();
+                        shortestRun = character1Count;
                     }
-                    else
+                    if (character2Count < shortestRun)
                     {
                         lblShortestRunOut.Text = character2Count.ToString();
                     }
+                    if (character3Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character3Count.ToString();
+                    }
+
+                    //Set character color when found
+                    character2.BackColor = Color.Purple;
+                    character3.BackColor = Color.Purple;
                 }
                 if (characters[2].Bounds.IntersectsWith(characters[3].Bounds))
                 {
                     character3Found = true;
                     character4Found = true;
 
-                    if (character1Count < character2Count)
+                    if (shortestRun == 0)
+                    {
+                        shortestRun = character1Count;
+                    }
+                    if (character3Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character3Count.ToString();
+                    }
+                    if (character4Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character4Count.ToString();
+                    }
+
+                    //Set character color when found
+                    character3.BackColor = Color.Purple;
+                    character4.BackColor = Color.Purple;
+                }
+                if (characters[0].Bounds.IntersectsWith(characters[3].Bounds))
+                {
+                    character1Found = true;
+                    character4Found = true;
+
+                    if (shortestRun == 0)
+                    {
+                        shortestRun = character1Count;
+                    }
+                    if (character1Count < shortestRun)
                     {
                         lblShortestRunOut.Text = character1Count.ToString();
                     }
-                    else
+                    if (character4Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character4Count.ToString();
+                    }
+
+                    //Set character color when found
+                    character1.BackColor = Color.Purple;
+                    character4.BackColor = Color.Purple;
+                }
+                if (characters[3].Bounds.IntersectsWith(characters[1].Bounds))
+                {
+                    character2Found = true;
+                    character4Found = true;
+
+                    if (shortestRun == 0)
+                    {
+                        shortestRun = character1Count;
+                    }
+                    if (character2Count < shortestRun)
                     {
                         lblShortestRunOut.Text = character2Count.ToString();
                     }
+                    if (character4Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character4Count.ToString();
+                    }
+
+                    //Set character color when found
+                    character2.BackColor = Color.Purple;
+                    character4.BackColor = Color.Purple;
                 }
+                if (characters[2].Bounds.IntersectsWith(characters[0].Bounds))
+                {
+                    character1Found = true;
+                    character3Found = true;
+
+                    if (shortestRun == 0)
+                    {
+                        shortestRun = character1Count;
+                    }
+                    if (character1Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character1Count.ToString();
+                    }
+                    if (character3Count < shortestRun)
+                    {
+                        lblShortestRunOut.Text = character3Count.ToString();
+                    }
+
+                    //Set character color when found
+                    character1.BackColor = Color.Purple;
+                    character3.BackColor = Color.Purple;
+                }
+
                 if (character1Found && character2Found && character3Found && character4Found)
                 {
+
+                    //Set character color when found
+                    character1.BackColor = Color.Red;
+                    character2.BackColor = Color.Red;
+                    character3.BackColor = Color.Red;
+                    character4.BackColor = Color.Red;
+
                     confetiImage.Visible = true;
                     lblFound.Visible = true;
                     gameTimer.Enabled = false;
                     playerBackground.Stop();
                     playerFoundBackground.Play();
+
+                    int longestRunInitial = Math.Max(character1Count, character2Count);
+                    int longestRunSecondary = Math.Max(character2Count, character3Count);
+                    longestRun = Math.Max(longestRunSecondary, longestRunInitial);
+                    lblLongestRunOut.Text = longestRun.ToString();
+                    initialCountvalueLongest = false;
                 }
             }
         }
 
-        private void frmMain_KeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Space)
-            {
-                movementPosition = -1;
-            }
-        }
-
-        private void frmMain_KeyUp(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Space)
-            {
-                movementPosition = 1;
-            }
-        }
-
+        /// <summary>
+        /// Handles scroll event for setting the number of characters on screen
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void tckCharacterNumb_Scroll(object sender, EventArgs e)
         {
             lbllCurrentCharacterValue.Text = tckCharacterNumb.Value.ToString();
@@ -491,6 +666,11 @@ namespace WanderinInTheWoodsProjectMain
             }
         }
 
+        /// <summary>
+        /// Handles the scroll event for setting the custom grid width
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void tckGridWidth_Scroll(object sender, EventArgs e)
         {
             lblWidthValue.Text = tckGridWidth.Value.ToString();
@@ -514,6 +694,11 @@ namespace WanderinInTheWoodsProjectMain
             }
         }
 
+        /// <summary>
+        /// Handles Height scroll event for setting the custom grid height
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void tckGridHeight_Scroll(object sender, EventArgs e)
         {
             lblHeightValue.Text = tckGridHeight.Value.ToString();
@@ -544,16 +729,39 @@ namespace WanderinInTheWoodsProjectMain
             }
         }
 
+        /// <summary>
+        /// Handles Character Speed scroll event for setting the custom character speed value
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void tckCharacterSpeed_Scroll(object sender, EventArgs e)
         {
             lblCharacterSpeedValue.Text = tckCharacterSpeed.Value.ToString();
+
+            if(tckCharacterSpeed.Value == 1)
+            {
+                characterSpeedLeft = -2;
+                characterSpeedRight = 2;
+            }
+            if(tckCharacterSpeed.Value == 2)
+            {
+                characterSpeedLeft = -5;
+                characterSpeedRight = 5;
+            }
+            if(tckCharacterSpeed.Value == 3)
+            {
+                characterSpeedLeft = -8;
+                characterSpeedRight = 8;
+            }
+
         }
 
 
-
-
-        //MOVE CHARACTERS
-
+        /// <summary>
+        /// Handles character mouse events for recalculating character positions
+        /// </summary>
+        /// <param name="TBD">info here/param>
+        /// <returns>return <see cref="GUI"/> to be shown here</returns>
         private void character1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -579,7 +787,6 @@ namespace WanderinInTheWoodsProjectMain
             character1Location = Point.Empty;
         }
 
-
         private void character2_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -604,8 +811,6 @@ namespace WanderinInTheWoodsProjectMain
         {
             character2Location = Point.Empty;
         }
-
-       
 
         private void character3_MouseDown(object sender, MouseEventArgs e)
         {
